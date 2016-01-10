@@ -138,7 +138,7 @@ this:
 
 ``http://docs.saltstack.com/en/latest/ref/states/all/salt.states.pkg.html``
 
-And the pkg state module which looks like this:
+And the pkg state module documentation which looks like this:
 
 ``http://docs.saltstack.com/en/latest/ref/modules/all/salt.modules.pkg.html``
 
@@ -166,13 +166,11 @@ with a very simple state(sls file) example:
 .. code-block:: yaml
 
     install_nginx:
-      pkg:
-        - installed
+      pkg.installed:
         - name: nginx
 
     start_nginx:
-      service:
-        - running
+      service.running:
         - name: nginx
         - enable: True
 
@@ -242,13 +240,13 @@ create an amazing plain HTML website.
 
 To begin with start by creating the directory ``/srv/salt/nginx/files``, and
 within the files directory create the index file
- ``/srv/salt/nginx/files/index.html``.
+``/srv/salt/nginx/files/index.html``. Populate the index page with:
 
- Populate the index page with:
+.. code-block:: html
 
- Hello world!
+    Hello world!
 
- So our directory structure now looks like this:
+So our directory structure now looks like this:
 
 ``/srv/salt/``
 ``/srv/salt/top.sls``
@@ -260,17 +258,17 @@ We're almost ready to serve content, we just need a state to service it!
 Create another state ``/srv/salt/nginx/site.sls``. This state will create
 our site, and it looks like the following:
 
-include:
-  - nginx
+.. code-block:: yaml
+    include:
+      - nginx
 
-index_page:
-  file:
-    - managed
-    - name: /var/www/nginx-default/index.html #note that this may differ
-    - source: salt://nginx/files/index.html
-    - mode: 644
-    - user: root
-    - group: root
+    index_page:
+      file.managed:
+        - name: /var/www/nginx-default/index.html #note that this may differ
+        - source: salt://nginx/files/index.html
+        - mode: 644
+        - user: root
+        - group: root
 
 So what exactly is happening here? The only truly new concept we've
 introduced is the ``source`` option, and ``include``. ``Include`` does
@@ -318,8 +316,9 @@ it to the pkg state documentation
 differences and similarity in both the documentation, and the functionality.
 
 2. Review some of the example projects where Salt is used
-(http://docs.saltstack.com/topics/salt_projects.html), and try to see what's
-going on. Make some notes regarding what you don't understand.
+(http://docs.saltstack.com/en/latest/topics/development/salt_projects.html),
+and try to see what's going on. Make some notes regarding what you don't
+understand.
 
 3. Configure the masterless minion to have a secondary HTML file, and ensure
 that the Nginx service watches this file. What do you notice is problematic
